@@ -37,11 +37,11 @@ rnd = rand()!Reaccio qua pasara
 !print*,'Random',rnd
 mu = 1
 suma =0.0d0
-do
+do while(rnd>suma)
     !print*,mu,suma,rnd,Pr(mu)+suma
-    if((rnd.gt.suma).and.(rnd.lt.Pr(mu)+suma))then
-        exit
-    endif
+    !if((rnd.gt.suma).and.(rnd.lt.Pr(mu)+suma))then
+    !    exit
+    !endif
     !print*,mu,suma,rnd,Pr(mu)+suma
     suma = suma+Pr(mu)
     mu = mu+1
@@ -91,13 +91,13 @@ subroutine reaction(mu)
 !Feim sa reaccio triada
     integer(8),intent(in) :: mu
     !print*,'mu',mu
-    if(mu==2)then
+    if(mu==1)then
         !print*,itt,'mu=1'
         !read(*,*)
         P = P-1
         DNA = DNA-1
         PDNA = PDNA+1
-    elseif(mu==1)then
+    elseif(mu==2)then
         !print*,itt,'mu=2',Pr
         !read(*,*)
         P = P+1
