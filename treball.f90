@@ -3,6 +3,7 @@ implicit none
 real(8) :: a1,a2,a3,a4,a5,a6,a0!Ratios
 real(8),dimension(6) :: a,Pr!Ratios i probabilitats de donar una reaccio
 real(8) ::P,M,DNA,PDNA!Magnituds dinamiques
+real(8) :: suma
 real(8) :: t,tau,rnd!Temps actual,temps estocastic i variable aleatoria entre 0 i 1
 integer(8) :: mu,i,MaxItt,itt
 
@@ -19,7 +20,7 @@ a5=10.0d0
 a6=1.0d0
 t=0
 itt=1
-MaxItt=1000
+MaxItt=100000
 !call srand(9)
 a = (/a1,a2,a3,a4,a5,a6/)
 a0 = a1+a2+a3+a4+a5+a6
@@ -35,12 +36,18 @@ rnd = rand()!Reaccio qua pasara
 !print*,'on entra?',Pr
 !print*,'Random',rnd
 mu = 1
-do
-    if((rnd.gt.Pr(mu)).and.(rnd.lt.Pr(mu+1)))then
-        exit
-    endif
+suma =0.0d0
+do while(rnd>suma)
+    !print*,mu,suma,rnd,Pr(mu)+suma
+    !if((rnd.gt.suma).and.(rnd.lt.Pr(mu)+suma))then
+    !    exit
+    !endif
+    !print*,mu,suma,rnd,Pr(mu)+suma
+    suma = suma+Pr(mu)
     mu = mu+1
 enddo
+!print*,Pr
+!read(*,*)
 !mu = mu+1
 t = t+tau
 call reaction(mu)
@@ -69,14 +76,15 @@ subroutine prob_compute(Pr,a)
     !print*,'PDNA,P,DNA,M,P',PDNA,P,DNA,M,P
     !print*,'pr',Pr
     !print*,'Probabilitats',Pr/sum(Pr)
-    do i=1,6
-        suma = suma+Pr(i)
-        Pr(i) = suma
-    enddo
+    !do i=1,6
+    !    suma = suma+Pr(i)
+    !    Pr(i) = suma
+    !enddo
     !print*,Pr
     !print*,'a0',suma
     !read(*,*)
-    Pr = Pr/suma
+    !Pr = Pr/suma
+    Pr = Pr/sum(Pr)
 end subroutine
 
 subroutine reaction(mu)
