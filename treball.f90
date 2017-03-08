@@ -1,6 +1,6 @@
 program gillespie
-implicit none
 use ritmes
+implicit none
 real(8),dimension(12) :: Pr!Ratios i probabilitats de donar una reaccio
 real(8) ::RasGTP,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK!Magnituds dinamiques
 real(8) :: suma,a0,factor
@@ -24,7 +24,7 @@ integer(8) :: mu,MaxItt,itt
 !--Parametres--
     k1=1.0d0
     k2=0.25d0
-    V3=2.5d0
+    V3=100.0d0
     V4=3.750d0
     k5=2.5d0
     k6=0.5d0
@@ -54,7 +54,7 @@ integer(8) :: mu,MaxItt,itt
 
 t=0
 itt=1
-MaxItt=200000!-1492324
+MaxItt=500000!-1492324
 !call srand(9)
 !----------------------------------------------------------
 do
@@ -63,7 +63,7 @@ call prob_compute(Pr,a0)
 !----------------------------------------------------------
 
 !-------------------MONTECARLO TIME STEP-------------------
-tau = -log(rand())/(a0/60.0d0)!Temps per que passi una reaccio
+tau = -log(rand())/(a0)!Temps per que passi una reaccio
 rnd = rand()
 mu = 1!Reaccio qua pasara
 suma =Pr(mu)
@@ -71,10 +71,10 @@ do while(rnd>suma)
     mu = mu+1
     suma = suma+Pr(mu)
 enddo
-t = t+tau
+t = t+(tau/60.0d0)
 call reaction(mu)
-print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK!,Pr,a0,mu
-if(itt==MaxItt)then
+print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK,Pr,a0,mu
+if(itt==MaxItt.or.t>100)then
     stop
 endif
 itt=itt+1

@@ -22,8 +22,8 @@ x0(9)=0.0d0!ppERK
 !--Parametres--
     k1=1.0d0
     k2=0.25d0
-    V3=2.5d0
-    V4=3.75d0
+    V3=100.0d0
+    V4=3.750d0
     k5=2.5d0
     k6=0.5d0
     V7=3.0d0
@@ -92,13 +92,16 @@ function f2(x,t) result(v)!v es el vector de pendientes de conejos y lobos
     real(8),dimension(size(x)) :: v
     common RasGTP
     v(1) = ni4(x(3),x(2))-ni1(RasGTP,x(1),x(2),x(9))  !d(Raf)/dt
-    v(2) = ni1(RasGTP,x(1),x(2),x(9))-ni2(RasGTP,x(1),x(2),x(9))+ni3(x(3),x(2))-ni4(x(3),x(2))!d(pRaf)/dt
+    v(2) = ni1(RasGTP,x(1),x(2),x(9))-ni2(RasGTP,x(1),x(2),x(9))
+    v(2) = v(2)+ni3(x(3),x(2))-ni4(x(3),x(2))!d(pRaf)/dt
     v(3) = ni2(RasGTP,x(1),x(2),x(9))-ni3(x(3),x(2))!d(ppRAF)/dt
     v(4) = ni8(x(6),x(5))-ni5(x(3),x(4),x(5))!d(MEK)/dt
-    v(5) = ni5(x(3),x(4),x(5))-ni6(x(3),x(4),x(5))+ni7(x(6),x(5))-ni8(x(6),x(5))!d(pMEK)/dt
+    v(5) = ni5(x(3),x(4),x(5))-ni6(x(3),x(4),x(5))
+    v(5) = v(5)+ni7(x(6),x(5))-ni8(x(6),x(5))!d(pMEK)/dt
     v(6) = ni6(x(3),x(4),x(5))-ni7(x(6),x(5))!d(ppMEK)/dt
     v(7) = ni12(x(9),x(7),x(8))-ni9(x(6),x(7),x(8))!d(ERK)/dt
-    v(8) = ni9(x(6),x(7),x(8))-ni10(x(6),x(7),x(8))+ni11(x(9),x(7),x(8))-ni12(x(9),x(7),x(8))!d(pERK)/dt
+    v(8) = ni9(x(6),x(7),x(8))-ni10(x(6),x(7),x(8))
+    v(8) = v(8)+ni11(x(9),x(7),x(8))-ni12(x(9),x(7),x(8))!d(pERK)/dt
     v(9) = ni10(x(6),x(7),x(8))-ni11(x(9),x(7),x(8))!d(ppERK)/dt
 end function
 
@@ -138,7 +141,7 @@ subroutine RK4(func,x0,t0,h,Nsteps,Nmeasure,unitat)
             write(unitat,*),ti,xi,func(xi,ti)
         endif
         !...............................................................
-        !Condicion de extinciom + perturbaciones (se puede borrar para generalizar)
+        !Condicion de extincion + perturbaciones (se puede borrar para generalizar)
         !----perturbacions------------------
 !        if (abs(ti-90)<h/2.0d0)then
 !            print*,xi(1)
