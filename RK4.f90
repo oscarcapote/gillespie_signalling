@@ -1,54 +1,26 @@
 program RKBio
 use ritmes
 implicit none
-real(8) :: h,t0,RasGTP
+real(8) :: h,t0
 real(8),dimension(9) :: x0 
 integer(8) :: Nsteps,Nmeasure
+real(8) ::factor,RasGTP,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK!Magnituds dinamiques
 common RasGTP
 !Inicialitzacio de parametres i condicions inicials
 
-RasGTP=10.0d0!RasGTP
-x0(1)=300.0d0!Raf
-x0(2)=0.0d0!pRaf
-x0(3)=0.0d0!ppRaf
-x0(4)=300.0d0!MEK
-x0(5)=0.0d0!pMEK
-x0(6)=0.0d0!ppMEK
-x0(7)=300.0d0!ERK
-x0(8)=0.0d0!pERK
-x0(9)=0.0d0!ppERK
+include 'declaration.dec'
 
 
-!--Parametres--
-    k1=1.0d0
-    k2=0.25d0
-    V3=100.0d0
-    V4=3.750d0
-    k5=2.5d0
-    k6=0.5d0
-    V7=3.0d0
-    V8=3.75d0
-    k9=0.125d0
-    k10=0.125d0
-    V11=3.75d0
-    V12=5.0d0
+x0(1)=Raf
+x0(2)=pRaf
+x0(3)=ppRaf
+x0(4)=MEK
+x0(5)=pMEK
+x0(6)=ppMEK
+x0(7)=ERK
+x0(8)=pERK
+x0(9)=ppERK
 
-
-    Km1=100.0d0
-    Km2=200.0d0
-    Km3=50.0d0
-    Km4=100.0d0
-    Km5=250.0d0
-    Km6=250.0d0
-    Km7=250.0d0
-    Km8=80.0d0
-    Km9=250.0d0
-    Km10=250.0d0
-    Km11=120.0d0
-    Km12=20.0d0
-    Km13=300.0d0
-    F=1.0d0!???
-    Kf=25.0d0!???
 h = init(1)
 Nsteps = init_int(2)
 Nmeasure = 100
@@ -92,16 +64,13 @@ function f2(x,t) result(v)!v es el vector de pendientes de conejos y lobos
     real(8),dimension(size(x)) :: v
     common RasGTP
     v(1) = ni4(x(3),x(2))-ni1(RasGTP,x(1),x(2),x(9))  !d(Raf)/dt
-    v(2) = ni1(RasGTP,x(1),x(2),x(9))-ni2(RasGTP,x(1),x(2),x(9))
-    v(2) = v(2)+ni3(x(3),x(2))-ni4(x(3),x(2))!d(pRaf)/dt
+    v(2) = ni1(RasGTP,x(1),x(2),x(9))-ni2(RasGTP,x(1),x(2),x(9))+ni3(x(3),x(2))-ni4(x(3),x(2))!d(pRaf)/dt
     v(3) = ni2(RasGTP,x(1),x(2),x(9))-ni3(x(3),x(2))!d(ppRAF)/dt
     v(4) = ni8(x(6),x(5))-ni5(x(3),x(4),x(5))!d(MEK)/dt
-    v(5) = ni5(x(3),x(4),x(5))-ni6(x(3),x(4),x(5))
-    v(5) = v(5)+ni7(x(6),x(5))-ni8(x(6),x(5))!d(pMEK)/dt
+    v(5) = ni5(x(3),x(4),x(5))-ni6(x(3),x(4),x(5))+ni7(x(6),x(5))-ni8(x(6),x(5))!d(pMEK)/dt
     v(6) = ni6(x(3),x(4),x(5))-ni7(x(6),x(5))!d(ppMEK)/dt
     v(7) = ni12(x(9),x(7),x(8))-ni9(x(6),x(7),x(8))!d(ERK)/dt
-    v(8) = ni9(x(6),x(7),x(8))-ni10(x(6),x(7),x(8))
-    v(8) = v(8)+ni11(x(9),x(7),x(8))-ni12(x(9),x(7),x(8))!d(pERK)/dt
+    v(8) = ni9(x(6),x(7),x(8))-ni10(x(6),x(7),x(8))+ni11(x(9),x(7),x(8))-ni12(x(9),x(7),x(8))!d(pERK)/dt
     v(9) = ni10(x(6),x(7),x(8))-ni11(x(9),x(7),x(8))!d(ppERK)/dt
 end function
 
@@ -141,7 +110,7 @@ subroutine RK4(func,x0,t0,h,Nsteps,Nmeasure,unitat)
             write(unitat,*),ti,xi,func(xi,ti)
         endif
         !...............................................................
-        !Condicion de extincion + perturbaciones (se puede borrar para generalizar)
+        !Condicion de extinciom + perturbaciones (se puede borrar para generalizar)
         !----perturbacions------------------
 !        if (abs(ti-90)<h/2.0d0)then
 !            print*,xi(1)
