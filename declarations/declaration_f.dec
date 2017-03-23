@@ -1,0 +1,43 @@
+!--Condicions inicials--
+    factor = 1.0d0/315.31118266529563d0
+    RasGTP=10.0d0
+    Raf=300.0d0
+    pRaf=0.0d0
+    ppRaf=0.0d0
+    MEK=300.0d0
+    pMEK=0.0d0
+    ppMEK=0.0d0
+    ERK=300.0d0
+    pERK=0.0d0
+    ppERK=0.0d0
+
+!--Parametres--
+    kCat1=0.025d0
+    kCat2=0.25d0
+    V3=2.50d0
+    V4=3.750d0
+    kCat5=2.5d0
+    kCat6=0.5d0
+    V7=3.0d0
+    V8=3.75d0
+    kCat9=0.125d0
+    kCat10=0.125d0
+    V11=0.025d0
+    V12=5.0d0
+
+
+    Km1=100.0d0
+    Km2=200.0d0
+    Km3=50.0d0
+    Km4=100.0d0
+    Km5=250.0d0
+    Km6=250.0d0
+    Km7=250.0d0
+    Km8=80.0d0
+    Km9=250.0d0
+    Km10=250.0d0
+    Km11=120.0d0
+    Km12=20.0d0
+    Km13=300.0d0
+    F=5.0d0!???
+    Kf=100.0d0!???
