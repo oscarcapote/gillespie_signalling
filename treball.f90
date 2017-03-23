@@ -3,18 +3,42 @@ use ritmes
 implicit none
 real(8),dimension(12) :: Pr!Ratios i probabilitats de donar una reaccio
 real(8) ::RasGTP,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK!Magnituds dinamiques
-real(8) :: suma,a0,factor,tFinal
+real(8) :: suma,a0,factor,tFinal,rnd2,a,ba!,ran2
 real(8) :: t,tau,rnd!Temps actual,temps estocastic i variable aleatoria entre 0 i 1
-integer(8) :: mu,MaxItt,itt
+integer(8) :: mu,MaxItt,itt,Nmeasure,Nitt
+character(2) :: opt
+
 
 !----------------------INICIALITZACIO---------------------
 !!--Condicions inicials--
-include 'declaration.dec'
+
+!Llegim argument passat per linia de comandes per part de s'usuari
+!Per defecte simulara a
+call get_command_argument(1,opt)
+if(opt==''.or.opt=='a')then
+    include './declarations/declaration_a.dec'
+elseif(opt=='a0')then
+    include './declarations/declaration_a0.dec'
+elseif(opt=='b')then
+    include './declarations/declaration_b.dec'
+elseif(opt=='c')then
+    include './declarations/declaration_c.dec'
+elseif(opt=='d')then
+    include './declarations/declaration_d.dec'
+elseif(opt=='e')then
+    include './declarations/declaration_e.dec'
+elseif(opt=='f')then
+    include './declarations/declaration_f.dec'
+endif
 t=0
 itt=1
-tFinal = 1000
-MaxItt=500000!-1492324
-!call srand(9)
+tFinal = 100
+MaxItt=1000000!-1492324
+Nitt = 100!Cada cuantes iteracions vull printar resultats
+Nmeasure = 1
+!Parametres per reescalar U(0,1) i evitar que surti 0: Passa a ser U(a,1)
+a = 0.0000000001
+ba = 1.0d0-a
 !----------------------------------------------------------
 do
 !------------------UPDATE DE PROBABILITATS-----------------
@@ -25,31 +49,25 @@ call prob_compute(Pr,a0)
 !----------------------------------------------------------
 
 !-------------------MONTECARLO TIME STEP-------------------
-tau = -log(rand())/(a0/factor)!Temps per que passi una reaccio
-rnd = rand()
+rnd2= a+ba*rand()!rand()
+tau = -log(rnd2)/(a0/factor)!Temps per que passi una reaccio
+rnd =rand()
 mu = 1!Reaccio qua pasara
 suma =Pr(mu)
-!print*,'Random',rnd
 !print*,'Probabilitats',Pr
 do while(rnd>suma)
     mu = mu+1
     suma = suma+Pr(mu)
 enddo
 !read(*,*)
-!do
-!    if((rnd>suma).and.(rnd<=suma+Pr(mu+1)))then
-!        mu = mu+1
-!        exit
-!    endif
-!    mu = mu+1
-!    suma = suma + Pr(mu)
-!enddo
-!print*,'Seleccionat',mu
-!read(*,*)
 t = t+(tau/60.0d0)
 call reaction(mu)
-print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK,Pr,a0,mu
-if(itt==MaxItt.or.t>tFinal)then
+if(mod(itt,Nitt)==0)then
+    print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK,Pr,a0,mu
+    Nmeasure = Nmeasure +1
+endif
+if(Nmeasure==MaxItt.or.t>tFinal)then!Si em pas de nombre de mesures o arribo a un temps maxim, acabo simu
+    print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK,Pr,a0,mu
     stop
 endif
 itt=itt+1
@@ -126,5 +144,5 @@ subroutine reaction(mu)
     endif
 end subroutine
 
-
+!include 'ran2.f'
 end program
