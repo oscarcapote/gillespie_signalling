@@ -19,6 +19,8 @@ if(opt==''.or.opt=='a')then
     include './declarations/declaration_a.dec'
 elseif(opt=='a0')then
     include './declarations/declaration_a0.dec'
+elseif(opt=='a2')then
+    include './declarations/declaration_a2.dec'
 elseif(opt=='b')then
     include './declarations/declaration_b.dec'
 elseif(opt=='c')then

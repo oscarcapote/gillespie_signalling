@@ -34,18 +34,20 @@ clean:
 
 .PHONY: data
 data : $(DATA_a0) $(DATA_a) $(DATA_b) $(DATA_c) $(DATA_d) $(DATA_e) $(DATA_f) $(DECLARATIONS)
+	echo $(DATA_f)
 
-$(DATA_a0) : $(DECLARATIONS)
+$(DATA_a0) : $(filter %a0.dat %a2.dat ,$(DECLARATIONS) $(DATA_a0))
 	sh auto_compute.sh a0
-$(DATA_b) : $(DECLARATIONS)
+$(DATA_b) : $(filter %b.dat ,$(DECLARATIONS)) $(DATA_b)
 	sh auto_compute.sh b
-$(DATA_a) : $(DECLARATIONS)
+$(DATA_a) : $(filter %a.dat ,$(DECLARATIONS)) $(DATA_a)
 	sh auto_compute.sh a
-$(DATA_c) : $(DECLARATIONS)
+$(DATA_c) : $(filter %c.dat ,$(DECLARATIONS)) $(DATA_c)
 	sh auto_compute.sh c
-$(DATA_d) : $(DECLARATIONS)
+$(DATA_d) : $(filter %d.dat ,$(DECLARATIONS)) $(DATA_d)
 	sh auto_compute.sh d
-$(DATA_e) : $(DECLARATIONS)
+$(DATA_e) : $(filter %e.dat ,$(DECLARATIONS)) $(DATA_e)
 	sh auto_compute.sh e
-$(DATA_f) : $(DECLARATIONS)
+$(DATA_f) : $(filter %f%.dat ,$(DECLARATIONS)) $(DATA_f)
+	@echo $(filter %f%.dat ,$(DECLARATIONS))
 	sh auto_compute.sh f

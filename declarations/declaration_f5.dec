@@ -9,7 +9,7 @@
     ppMEK=0.0d0
     ERK=300.0d0
     pERK=0.0d0
-    ppERK=17.0d0
+    ppERK=100.0d0
 
 !--Parametres--
     kCat1=0.025d0
@@ -40,4 +40,4 @@
     Km12=20.0d0
     Km13=300.0d0
     F=5.0d0!???
-    Kf=100.0d0!???
+    Kf=300.0d0!???
