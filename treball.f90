@@ -27,8 +27,18 @@ elseif(opt=='d')then
     include './declarations/declaration_d.dec'
 elseif(opt=='e')then
     include './declarations/declaration_e.dec'
-elseif(opt=='f')then
-    include './declarations/declaration_f.dec'
+elseif(opt=='f1')then
+    include './declarations/declaration_f1.dec'
+elseif(opt=='f2')then
+    include './declarations/declaration_f2.dec'
+elseif(opt=='f3')then
+    include './declarations/declaration_f3.dec'
+elseif(opt=='f4')then
+    include './declarations/declaration_f4.dec'
+elseif(opt=='f5')then
+    include './declarations/declaration_f5.dec'
+elseif(opt=='f6')then
+    include './declarations/declaration_f6.dec'
 endif
 t=0
 itt=1
@@ -36,6 +46,12 @@ tFinal = 100
 MaxItt=1000000!-1492324
 Nitt = 100!Cada cuantes iteracions vull printar resultats
 Nmeasure = 1
+if(opt(1:1)=='f')then
+    tFinal = 800
+    MaxItt=1000000!-1492324    
+    Nitt = 100000!Cada cuantes iteracions vull printar resultats
+    ERK = 300-ppERK
+endif
 !Parametres per reescalar U(0,1) i evitar que surti 0: Passa a ser U(a,1)
 a = 0.0000000001
 ba = 1.0d0-a
@@ -63,11 +79,11 @@ enddo
 t = t+(tau/60.0d0)
 call reaction(mu)
 if(mod(itt,Nitt)==0)then
-    print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK,Pr,a0,mu
+    print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK!,Pr,a0,mu
     Nmeasure = Nmeasure +1
 endif
 if(Nmeasure==MaxItt.or.t>tFinal)then!Si em pas de nombre de mesures o arribo a un temps maxim, acabo simu
-    print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK,Pr,a0,mu
+    print*,t,Raf,pRaf,ppRaf,MEK,pMEK,ppMEK,ERK,pERK,ppERK!,Pr,a0,mu
     stop
 endif
 itt=itt+1

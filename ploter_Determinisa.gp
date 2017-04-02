@@ -10,4 +10,14 @@ plot 'Resultats_determinista.dat' u 1:8 w l t 'ERK',\
      '' u 1:9 w l t 'pERK',\
      '' u 1:10 w l t 'ppERK'
 pause(-1)
+plot 'Resultats_determinista.dat' u 1:11 w l t 'ERK',\
+     '' u 1:12 w l t 'pERK',\
+     '' u 1:13 w l t 'ppERK',\
+     '' u 1:14 w l t 'ppERK',\
+     '' u 1:15 w l t 'ppERK',\
+     '' u 1:16 w l t 'ppERK',\
+     '' u 1:17 w l t 'ppERK',\
+     '' u 1:18 w l t 'ppERK',\
+     '' u 1:19 w l t 'ppERK'
+pause(-1)
 
